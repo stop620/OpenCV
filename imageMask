@@ -1,0 +1,31 @@
+#include "opencv2/opencv.hpp"
+#include <iostream>
+
+using namespace std;
+using namespace cv;
+
+void main()
+{
+	Mat src = imread("images/airplane.bmp", IMREAD_COLOR);
+	Mat mask = imread("images/mask_plane.bmp", IMREAD_GRAYSCALE);
+	Mat dst = imread("images/field.bmp", IMREAD_COLOR);
+	TickMeter tm;
+
+	if (src.empty() || mask.empty() || dst.empty()) {
+		cerr << "image load fail" << endl;
+		return;
+	}
+
+	tm.start();
+
+	src.copyTo(dst, mask);
+
+	tm.stop();
+	double ms = tm.getTimeMilli();
+
+	cout << "Time: " << ms << "ms." << endl;
+	imshow("dst", dst);
+
+	waitKey(0);
+	destroyAllWindows();
+}
