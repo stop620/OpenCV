@@ -55,30 +55,20 @@ int main() {
 	int count = 0;
 	time_t temp;
 	struct tm* timeinfo;
-	VideoCapture cap(0); // ���� ���, 0 = ��ķ
+	VideoCapture cap(0); // 파일 경로, 0 = 카메라
 
 	int frame_width = cvRound(cap.get(CAP_PROP_FRAME_WIDTH));
 	int frame_height = cvRound(cap.get(CAP_PROP_FRAME_HEIGHT));
 
 	int fourcc = VideoWriter::fourcc('X', 'V', 'I', 'D');
 	double fps = cap.get(CAP_PROP_FPS);
-	VideoWriter output("output.mp4", fourcc, 6, Size(frame_width, frame_height)); //���� fps, ��ķ 6
+	VideoWriter output("output.mp4", fourcc, 6, Size(frame_width, frame_height)); //파일 fps, 카메라 6
 	Mat frame1, frame2, frame3, sub;
 
 	Mat fframe, bframe;
 
 	cap >> fframe;
 	bframe = imgProcess(fframe);
-		Mat test1, test2, ttt, bbb, hhh, ddd, aaa;
-vector<vector<Point>> ccc;
-vector<Vec4i> hie;
-cvtColor(bframe, test1, COLOR_BGR2GRAY);
-cvtColor(frame2, test2, COLOR_BGR2GRAY);
-absdiff(test1, test2, ttt);
-GaussianBlur(ttt, bbb, Size(15, 15), 0);
-threshold(bbb, hhh, 60, 255, THRESH_BINARY);
-dilate(hhh, ddd, Mat(), Point(-1, -1), 3);
-findContours(ddd, ccc, hie, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
 
 	while (1) {
 		time(&temp);
@@ -112,14 +102,14 @@ findContours(ddd, ccc, hie, RETR_TREE, CHAIN_APPROX_SIMPLE, Point(0, 0));
 
 		output << frame1;
 
-		keyValue = waitKey(1); //���� 1000/fps, ��ķ 1
-		if (keyValue == 27) { //esc ����
+		keyValue = waitKey(1); //파일 1000/fps, 카메라 1
+		if (keyValue == 27) { //esc 종료
 			break;
 		}
-		else if (keyValue == ' ') { //space �Ͻ�����
-			waitKey(0) = ' ';
+		else if (keyValue == ' ') { //space 일시정지
+			waitKey(0) == ' ';
 		}
-		else if (keyValue == 'p' || keyValue == 'P') { //p ĸ��
+		else if (keyValue == 'p' || keyValue == 'P') { //p 캡쳐
 			imwrite("./capture" + to_string(count) + ".png", frame1);
 			count++;
 		}
